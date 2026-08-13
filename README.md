@@ -71,17 +71,27 @@ directly, without needing it pre-registered anywhere first.
 
 ### Steps
 
-1. Download [`PM-241-BT-client.ppd`](./PM-241-BT-client.ppd) from this repo
-   and save it somewhere accessible, e.g. `~/Downloads/`.
+1. Download [`PM-241-BT-client.ppd`](./PM-241-BT-client.ppd) and
+   [`PM-241-BT.icns`](./PM-241-BT.icns) from this repo and save them
+   somewhere accessible, e.g. `~/Downloads/`.
 
-2. If a `PM-241-BT` printer already exists on your Mac (e.g. from a previous
+2. Install the icon at the fixed path the PPD expects it at (this gives the
+   printer its proper icon in Finder/Printers & Scanners instead of the
+   generic printer icon):
+
+   ```
+   sudo mkdir -p /usr/local/share/PM-241-BT
+   sudo cp ~/Downloads/PM-241-BT.icns /usr/local/share/PM-241-BT/PM-241-BT.icns
+   ```
+
+3. If a `PM-241-BT` printer already exists on your Mac (e.g. from a previous
    install attempt), remove it first:
 
    ```
    sudo lpadmin -x PM-241-BT
    ```
 
-3. Install the printer using this driver, pointed at the CUPS server the
+4. Install the printer using this driver, pointed at the CUPS server the
    PM-241-BT is physically connected to:
 
    ```
@@ -96,7 +106,7 @@ directly, without needing it pre-registered anywhere first.
    Replace `<cups-server-address>` with the hostname/IP of your CUPS server,
    and `<location>` with whatever description you'd like (e.g. `Packpoint`).
 
-4. Confirm it installed:
+5. Confirm it installed:
 
    ```
    lpstat -p PM-241-BT
@@ -108,9 +118,15 @@ directly, without needing it pre-registered anywhere first.
    CUPS's generic warning for any PPD-based (non-driverless) printer install,
    not specific to this driver.
 
-5. Print a test label. It should now show up as `PM-241-BT` (not a generic
-   printer), default to the correct 4"x6" label size, and print without the
-   "Filter failed" error.
+6. Print a test label. It should now show up as `PM-241-BT` with its own
+   icon (not the generic printer icon) in Printers & Scanners, default to
+   the correct 4"x6" label size, and print without the "Filter failed"
+   error.
+
+   If the icon still shows generic, double check the icon file actually
+   exists at `/usr/local/share/PM-241-BT/PM-241-BT.icns` (step 2) — macOS
+   caches printer icons, so you may also need to remove and re-add the
+   printer, or log out/in, for a newly-installed icon to show up.
 
 ### If you need to fine-tune print alignment
 
