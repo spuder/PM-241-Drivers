@@ -37,6 +37,27 @@ It also bakes in:
 - A default horizontal offset (`AdjustHoriaontal`) calibrated for our
   printer unit, to correct for its physical print-head registration.
 
+## Is this driver for you?
+
+This driver is **only** for printing to a PM-241-BT that's shared over the
+network from another machine's CUPS install (e.g. a Linux box, Raspberry Pi,
+NAS, etc. with the printer plugged into it via USB, and CUPS sharing it out).
+It fixes the double-conversion crash described above, which only happens in
+that networked/remote-queue scenario.
+
+**If your PM-241-BT is plugged directly into your own Mac via USB**, don't
+use this driver — install the vendor's original/stock driver instead. In
+that setup there's no second machine to do the raster-to-TSPL conversion, so
+your Mac needs to do it locally, which is exactly the step this driver
+removes. Installing this driver for a directly-connected printer will result
+in nothing printing at all (the job will just be raw CUPS raster with no
+filter to turn it into something the printer understands).
+
+Short version:
+- PM-241-BT connected to *this* Mac via USB → use the vendor's stock driver.
+- PM-241-BT connected to a *different* machine, shared via CUPS, and you're
+  printing to it over the network → use this driver.
+
 ## Installation
 
 **You must install this driver via the command line (`lpadmin`) — it cannot
