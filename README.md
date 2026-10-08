@@ -128,6 +128,27 @@ directly, without needing it pre-registered anywhere first.
    caches printer icons, so you may also need to remove and re-add the
    printer, or log out/in, for a newly-installed icon to show up.
 
+### Server driver
+
+[`PM-241-BT-server.ppd`](./PM-241-BT-server.ppd) is the vendor's original,
+unmodified PPD, as installed on the CUPS server the printer is plugged into.
+It keeps the `rastertolabeltspl` filter line that the client driver removes,
+so the server does the single raster-to-TSPL conversion. It needs the
+vendor's LabelPrinter package installed on the server, which provides that
+filter.
+
+```
+sudo lpadmin -p PM-241-BT \
+  -E \
+  -v 'usb:///PM-241-BT?serial=<serial>' \
+  -P PM-241-BT-server.ppd \
+  -D "PM-241-BT" \
+  -L "<location>" \
+  -o printer-is-shared=true
+```
+
+`lpinfo -v` on the server lists the printer's USB URI, including its serial.
+
 ### If you need to fine-tune print alignment
 
 Physical print-head registration can vary slightly between printer units. If
